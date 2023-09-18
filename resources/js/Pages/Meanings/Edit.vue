@@ -8,13 +8,10 @@ const page = usePage();
 
 const props = defineProps({
     'masters': Object,
-    'search': String,
     'selectedBookId': Number,
     'selectedIdx': Number,
     'selectedMeanings': Array,
 })
-
-page.props.search = page.props.search === '%' ? '' : page.props.search
 
 const createNewWordMode = ref(false)
 
@@ -24,7 +21,7 @@ const bookId = ref(page.props.selectedBookId)
 
 const selectedIdx = ref(page.props.selectedIdx ? page.props.selectedIdx : 1)
 
-const searchText = ref(page.props.search)
+const searchText = ref('')
 
 const searchInput = ref(null)
 
@@ -35,7 +32,6 @@ const nextMeanings = computed(() => props.selectedMeanings.slice(2));
 const changeBook = () => {
     router.get(route('meaning.edit', {
         book_id: bookId.value,
-        searchText: searchText.value,
         selectedIdx: selectedIdx.value
     }));
 }
@@ -44,14 +40,13 @@ onMounted(() => {
     searchText.value = props.selectedMeanings[1].english !== "" ? props.selectedMeanings[1].english : props.selectedMeanings[1].word.english;
 })
 
-const updateMeaning = (wordId, english) => {
+const updateMeaning = (wordId) => {
     router.get(route('meaning.update', {
         id: selectedMeaning.id,
         word_id: wordId,
         book_id: bookId.value,
         japanese: selectedMeaning.japanese,
         index_no: selectedMeaning.index_no,
-        english: english,
     }
     )
     );
@@ -61,12 +56,11 @@ const createNewWord = () => {
     createNewWordMode.value = true;
 }
 
-const storeNewWord = (newWordEnglish, newWordPartOfSpeech) => {
+const storeNewWord = (newWordPartOfSpeech) => {
     router.post(route('word.store'), {
-        newWordEnglish: newWordEnglish,
+        newWordEnglish: searchText.value,
         newWordPartOfSpeech: newWordPartOfSpeech,
     })
-    // console.log(newWordEnglish, newWordPartOfSpeech)
 }
 </script>
 
@@ -169,7 +163,7 @@ const storeNewWord = (newWordEnglish, newWordPartOfSpeech) => {
                                         <option value="間投詞">間投詞</option>
                                     </select>
                                     <button class="px-4 py-2 ml-4 bg-green-300 rounded-full"
-                                        @click="storeNewWord(searchText, newPartOfSpeech)">Save</button>
+                                        @click="storeNewWord(newPartOfSpeech)">Save</button>
                                     <!-- /# -->
                                 </div>
                                 <table class="w-full text-sm">
@@ -189,7 +183,7 @@ const storeNewWord = (newWordEnglish, newWordPartOfSpeech) => {
                                             <td class="px-6 py-3">{{ master.id }}</td>
                                             <td class="px-6 py-3 hover:font-bold">
                                                 <Link type="button" as="button" class="text-blue-400"
-                                                    @click.prevent="updateMeaning(master.id, master.english)">
+                                                    @click.prevent="updateMeaning(master.id)">
                                                 Copy</Link>
                                             </td>
                                         </tr>

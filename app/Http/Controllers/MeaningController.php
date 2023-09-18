@@ -32,11 +32,10 @@ class MeaningController extends Controller
     public function edit(Request $request, WordEditService $wordEditService)
     {
         // inputボックスで指定された、単語帳とインデックス番号を受け取る
-        $attributes = $request->only(['book_id', 'searchText', 'selectedIdx']);
+        $attributes = $request->only(['book_id', 'selectedIdx']);
         if ($attributes == []) {
             $attributes = [
                 'book_id' => 4,
-                'searchText' => '',
                 'selectedIdx' => 800,
             ];
         }
@@ -47,7 +46,7 @@ class MeaningController extends Controller
         // 指定された単語帳で、指定されたインデックス番号の単語7個分のデータを受け取る
         $selectedMeanings = $wordEditService->selectedMeanings($selectedBookId, $selectedIdx);
 
-        $search = $selectedMeanings->get(1)->english;
+        $search = $selectedMeanings->get(1)->english; // selectedMeaning.englishそのもの？
 
         $masters = $wordEditService->masters($selectedMeanings);
 
@@ -64,24 +63,26 @@ class MeaningController extends Controller
 
     public function update(Request $request, Meaning $meaning, WordEditService $wordEditService)
     {
-        $id = (int)$request->get('id');
-        $selectedIdx = (int)$request->get('index_no');
-        $selectedBookId = (int)$request->get('book_id', 4);
-        $meaning = Meaning::find($id);
-        $meaning->word_id = (int)$request->get('word_id');
-        $meaning->english = $request->get('english');
+        $attributes = $request->only(['id', 'index_no', 'book_id', 'word_id']);
 
+        // $id = (int)$request->get('id');
+        // $selectedIdx = (int)$request->get('index_no');
+        // $selectedBookId = (int)$request->get('book_id', 4);
+        $meaning = Meaning::find($attributes['id']);
+        $meaning->word_id = (int)$attributes['word_id'];
+        // $meaning->english = $attributes['english'];
         $meaning->save();
 
+        $selectedIdx = (int)$attributes['index_no'];
+        $selectedBookId = (int)$attributes['book_id'];
         $selectedMeanings = $wordEditService->selectedMeanings($selectedBookId, $selectedIdx);
 
-        $search = $selectedMeanings->get(1)->english;
+        $search = $selectedMeanings->get(1)->english; // selectedMeaning.englishそのもの。
 
         $masters = $wordEditService->masters($selectedMeanings);
 
         return Inertia::render('Meanings/Edit', [
             'selectedIdx' => $selectedIdx + 1,
-            'search' => $search,
             'selectedMeanings' => $selectedMeanings,
             'masters' => $masters,
             'selectedBookId' => $selectedBookId,
