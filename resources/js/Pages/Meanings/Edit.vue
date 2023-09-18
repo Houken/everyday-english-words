@@ -44,9 +44,9 @@ onMounted(() => {
     searchText.value = props.selectedMeanings[1].english !== "" ? props.selectedMeanings[1].english : props.selectedMeanings[1].word.english;
 })
 
-const updateMeaning = (id, wordId, english) => {
+const updateMeaning = (wordId, english) => {
     router.get(route('meaning.update', {
-        id: id,
+        id: selectedMeaning.id,
         word_id: wordId,
         book_id: bookId.value,
         japanese: selectedMeaning.japanese,
@@ -189,7 +189,7 @@ const storeNewWord = (newWordEnglish, newWordPartOfSpeech) => {
                                             <td class="px-6 py-3">{{ master.id }}</td>
                                             <td class="px-6 py-3 hover:font-bold">
                                                 <Link type="button" as="button" class="text-blue-400"
-                                                    @click.prevent="updateMeaning(selectedMeaning.id, master.id, master.english)">
+                                                    @click.prevent="updateMeaning(master.id, master.english)">
                                                 Copy</Link>
                                             </td>
                                         </tr>
