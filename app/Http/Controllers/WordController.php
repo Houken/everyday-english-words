@@ -21,13 +21,13 @@ class WordController extends Controller
         $selectedBookId = $request->get('book_id', 1);
 
         $words = Word::query()
-                    ->whereHas('meanings', function ($query) use ($selectedBookId) {
-                        $query->where('book_id', $selectedBookId);
-                    })
-                    ->with(['meanings' => function ($query) use ($selectedBookId) {
-                        $query->where('book_id', $selectedBookId);
-                    }])
-                    ->orderBy('meanings.index_no')->paginate(20);
+            ->whereHas('meanings', function ($query) use ($selectedBookId) {
+                $query->where('book_id', $selectedBookId);
+            })
+            ->with(['meanings' => function ($query) use ($selectedBookId) {
+                $query->where('book_id', $selectedBookId);
+            }])
+            ->orderBy('meanings.index_no')->paginate(20);
 
         // dd($words);
 
@@ -53,12 +53,21 @@ class WordController extends Controller
      */
     public function store(StoreWordRequest $request)
     {
+        $attributes = $request->only(['newWordEnglish', 'newWordPartOfSpeech', 'selectedIdx', 'selectedBookId']);
+        // dd($attributes);
         $newWord = new Word;
-        $newWord->english = $request->newWordEnglish;
-        $newWord->part_of_speech = $request->newWordPartOfSpeech;
+        $newWord->english = $attributes['newWordEnglish'];
+        $newWord->part_of_speech = $attributes['newWordPartOfSpeech'];
+        $request->newWordPartOfSpeech;
         $newWord->save();
 
-        return to_route('meaning.edit');
+        $selectedIdx = $attributes['selectedIdx'];
+        $selectedBookId = $attributes['selectedBookId'];
+
+        return to_route('meaning.edit', [
+            'selectedIdx' => $selectedIdx,
+            'book_id' => $selectedBookId,
+        ]);
     }
 
     /**

@@ -18,6 +18,8 @@ use Inertia\Inertia;
 |
 */
 
+Route::get('/word-test', [MeaningController::class, 'test'])->name('word.test');
+
 Route::post('/word-edit', [WordController::class, 'store'])->name('word.store');
 
 Route::get('/word-update', [MeaningController::class, 'update'])->name('meaning.update');

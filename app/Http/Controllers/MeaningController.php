@@ -33,12 +33,14 @@ class MeaningController extends Controller
     {
         // inputボックスで指定された、単語帳とインデックス番号を受け取る
         $attributes = $request->only(['book_id', 'selectedIdx']);
+        // dd($request, $attributes);
         if ($attributes == []) {
             $attributes = [
                 'book_id' => 4,
-                'selectedIdx' => 800,
+                'selectedIdx' => 1100,
             ];
         }
+
 
             $selectedBookId = !$attributes['book_id'] ? $attributes['book_id'] : 4;
             $selectedIdx = is_numeric($attributes['selectedIdx']) ? $attributes['selectedIdx'] : 800;
@@ -46,7 +48,7 @@ class MeaningController extends Controller
         // 指定された単語帳で、指定されたインデックス番号の単語7個分のデータを受け取る
         $selectedMeanings = $wordEditService->selectedMeanings($selectedBookId, $selectedIdx);
 
-        $search = $selectedMeanings->get(1)->english; // selectedMeaning.englishそのもの？
+        // $search = $selectedMeanings->get(1)->english; // selectedMeaning.englishそのもの？
 
         $masters = $wordEditService->masters($selectedMeanings);
 
@@ -54,7 +56,6 @@ class MeaningController extends Controller
 
         return Inertia::render('Meanings/Edit', [
             'masters' => $masters,
-            'search' => $search,
             'selectedBookId' => $selectedBookId,
             'selectedIdx' => $selectedIdx,
             'selectedMeanings' => $selectedMeanings,
@@ -73,19 +74,24 @@ class MeaningController extends Controller
         // $meaning->english = $attributes['english'];
         $meaning->save();
 
-        $selectedIdx = (int)$attributes['index_no'];
+        $selectedIdx = (int)$attributes['index_no'] + 1;
         $selectedBookId = (int)$attributes['book_id'];
         $selectedMeanings = $wordEditService->selectedMeanings($selectedBookId, $selectedIdx);
 
-        $search = $selectedMeanings->get(1)->english; // selectedMeaning.englishそのもの。
+        // $search = $selectedMeanings->get(1)->english; // selectedMeaning.englishそのもの。
 
         $masters = $wordEditService->masters($selectedMeanings);
 
         return Inertia::render('Meanings/Edit', [
-            'selectedIdx' => $selectedIdx + 1,
+            'selectedIdx' => $selectedIdx,
             'selectedMeanings' => $selectedMeanings,
             'masters' => $masters,
             'selectedBookId' => $selectedBookId,
         ]);
+    }
+
+    public function test()
+    {
+        return Inertia::render('Meanings/Test');
     }
 }

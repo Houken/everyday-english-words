@@ -60,6 +60,8 @@ const storeNewWord = (newWordPartOfSpeech) => {
     router.post(route('word.store'), {
         newWordEnglish: searchText.value,
         newWordPartOfSpeech: newWordPartOfSpeech,
+        selectedIdx: selectedIdx.value,
+        selectedBookId: bookId.value,
     })
 }
 </script>
@@ -137,10 +139,10 @@ const storeNewWord = (newWordPartOfSpeech) => {
                             <div class="flex flex-col w-1/3 bg-red-50">
                                 <div class="p-2">
                                     <span
-                                        class="px-4 py-2 text-gray-600 bg-gray-100 border-gray-300 rounded hover:bg-white"><em
+                                        class="px-4 py-2 text-gray-600 border-gray-100 rounded bg-gray-50 hover:bg-white"><em
                                             class="text-xs">検索対象: </em><a
-                                            :href="'https://ejje.weblio.jp/content/' + searchText" target="_blank"
-                                            class="hover:font-bold">{{ searchText }}</a></span>
+                                            :href="'https://ejje.weblio.jp/content/' + searchText" target="_blank">{{
+                                                searchText }}</a></span>
                                     <button as="button"
                                         class="px-4 py-2 mx-4 font-bold text-white bg-red-500 border border-red-700 rounded hover:bg-red-700"
                                         @click="createNewWord()">New...</button>
@@ -164,7 +166,6 @@ const storeNewWord = (newWordPartOfSpeech) => {
                                     </select>
                                     <button class="px-4 py-2 ml-4 bg-green-300 rounded-full"
                                         @click="storeNewWord(newPartOfSpeech)">Save</button>
-                                    <!-- /# -->
                                 </div>
                                 <table class="w-full text-sm">
                                     <thead>
@@ -195,5 +196,5 @@ const storeNewWord = (newWordPartOfSpeech) => {
                 </div>
             </div>
         </div>
-
-    </AuthenticatedLayout></template>
+    </AuthenticatedLayout>
+</template>
