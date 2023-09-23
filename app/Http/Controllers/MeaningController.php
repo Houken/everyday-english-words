@@ -90,8 +90,33 @@ class MeaningController extends Controller
         ]);
     }
 
-    public function test()
+    public function test(Request $request)
     {
-        return Inertia::render('Meanings/Test');
+        $attributes = $request->only(['testBookId', 'testTypeIsRead', 'testHintLevel']);
+        $bookId = array_key_exists('testBookId', $attributes) ? (int)$attributes['testBookId'] : 3;
+        $typeIsRead = array_key_exists('testTypeIsRead', $attributes) ? (boolean)$attributes['testTypeIsRead'] : true;
+        $hintLevel = array_key_exists('testHintLevel', $attributes) ? (int)$attributes['testHintLevel'] : 3;
+        $rangeFrom = array_key_exists('testRangeFrom', $attributes) ? (int)$attributes['testRangeFrom'] : 1;
+        $rangeTo = array_key_exists('testRangeTo', $attributes) ? (int)$attributes['testRangeTo'] : 100;
+
+        $tests = Meaning::where('book_id', $bookId)
+                    ->whereBetween('index_no', [$rangeFrom,$rangeTo])
+                    ->inRandomOrder()
+                    ->take(25)
+                    ->with('word')
+                    ->get();
+
+        $maxIndex = Meaning::where('book_id', $bookId)->count();
+        // dd($rangeFrom, $rangeTo, $maxIndex);
+
+        return Inertia::render('Meanings/Test', [
+            'bookId' => $bookId,
+            'typeIsRead' => $typeIsRead,
+            'hintLevel' => $hintLevel,
+            'rangeFrom' => $rangeFrom,
+            'rangeTo' => $rangeTo,
+            'maxIndex'=> $maxIndex,
+            'tests' => $tests,
+        ]);
     }
 }

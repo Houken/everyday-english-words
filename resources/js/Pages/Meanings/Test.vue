@@ -1,13 +1,55 @@
 <script setup>
 import AuthenticatedTestLayout from '@/Layouts/AuthenticatedTestLayout.vue';
-import { Head } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { Head, router } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
 
-const testBookId = ref(4)
-const testTypeIsRead = ref(true)
-const testRangeFrom = ref(1)
-const testRangeTo = ref(100)
-const testQuestions = ref(25)
+const props = defineProps({
+    'bookId': { type: Number, default: 3 },
+    'typeIsRead': { type: Boolean, default: true },
+    'hintLevel': { type: Number, default: 2 },
+    'rangeFrom': { type: Number, default: 1 },
+    'rangeTo': { type: Number, default: 100 },
+    'questions': { type: Number, default: 25 },
+    'maxIndex': { type: Number, default: 1800 },
+    'tests': Object,
+})
+
+const testBookId = ref(props.bookId)
+const testTypeIsRead = ref(props.typeIsRead)
+const testHintLevel = ref(props.hintLevel)
+const testRangeFrom = ref(props.rangeFrom)
+const testRangeTo = ref(props.rangeTo)
+const testQuestions = ref(props.questions)
+const rangeFromInput = ref(testRangeFrom)
+const rangeToInput = ref(testRangeTo)
+
+const checkRangeFromInput = () => {
+    let from = rangeFromInput.value
+    let to = rangeToInput.value
+    rangeToInput.value = from > to ? Math.min(to + 100, props.maxIndex) : to
+    testRangeFrom.value = from
+    testRangeTo.value = to
+}
+
+watch([
+    testBookId,
+    testTypeIsRead,
+    testHintLevel,
+    testRangeFrom,
+    testRangeTo,
+    testQuestions
+], (cr, prev) => {
+
+    console.log(cr, prev);
+    router.get(route('word.test', {
+        testBookId: cr[0],
+        testTypeIsRead: cr[1],
+        testHintLevel: cr[2],
+        testRangeFrom: cr[3],
+        testRangeTo: cr[4],
+        testQuestions: cr[5],
+    }))
+})
 </script>
 
 <template>
@@ -16,14 +58,15 @@ const testQuestions = ref(25)
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">単語テスト</h2>
         </template>
+        <!-- {{ tests }} -->
         <div class="flex p-4 bg-greenyslate">
-            <div id="sidebar" class="flex flex-col mr-4 font-bold gap-y-4 basis-1/4 text-slate-600">
+            <div id="sidebar" class="flex flex-col mr-4 font-bold min-w-fit max-w-fit gap-y-4 basis-1/4 text-slate-600">
                 <div id="sitetitle"
                     class="p-6 text-2xl font-black text-center rounded-lg text-tealblack outline outline-2 outline-white outline-offset-4 bg-tealgray">
                     まいにち単語テスト</div>
                 <div id="books">
                     <h3 class="text-sm text-white text-outline drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">Book:</h3>
-                    <div class="grid grid-cols-2 text-sm drop-shadow">
+                    <div class="grid grid-cols-2 text-sm drop-shadow-md">
                         <button class="px-4 py-6 border-b border-r rounded-tl-md border-greenyslate" :class="{
                             'bg-grass text-black': testBookId == 3,
                             'bg-grassgray hover:text-black hover:bg-green-50': testBookId !== 3,
@@ -48,7 +91,7 @@ const testQuestions = ref(25)
                 <div id="types">
                     <h3 class="z-auto text-sm text-white text-outline drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">Type:
                     </h3>
-                    <div class="relative z-50 grid grid-cols-2 text-lg drop-shadow">
+                    <div class="relative z-50 grid grid-cols-2 text-lg drop-shadow-md">
                         <button class="px-4 py-8 border-r rounded-bl-md rounded-tl-md border-greenyslate" :class="{
                             'bg-pink-200 text-black': testTypeIsRead,
                             'hover:text-black bg-pink-100 hover:bg-red-50': !testTypeIsRead,
@@ -64,59 +107,59 @@ const testQuestions = ref(25)
                         'transition -translate-y-1 duration-500 delay-100': !testTypeIsRead,
                     }">
                         <h3>Hint Level</h3>
-                        <input name="hint" type="range" value="2" min="0" max="2" step="1">
+                        <input name="hint" type="range" min="0" max="2" step="1" v-model.number="testHintLevel">
                     </div>
                 </div>
                 <div id="range">
                     <h3 class="text-sm text-white text-outline drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">Range:</h3>
-                    <div class="grid grid-cols-2 text-center drop-shadow">
+                    <div class="grid grid-cols-2 text-center drop-shadow-md">
                         <div class="px-2 pt-4 pb-6 border-r bg-grassyellow rounded-bl-md rounded-tl-md border-greenyslate">
                             <h4 class="text-sm text-left">From:</h4>
-                            <select name="testRangeFrom" id="testRangeFrom" class="w-full px-4 py-2 text-sm" :value="testRangeFrom">
-                                <option value="1">1</option>
-                                <option value="101">101</option>
-                                <option value="201">201</option>
-                                <option value="301">301</option>
-                                <option value="401">401</option>
-                                <option value="501">501</option>
-                                <option value="601">601</option>
-                                <option value="701">701</option>
-                                <option value="801">801</option>
-                                <option value="901">901</option>
-                                <option value="1001">1001</option>
-                                <option value="1101">1101</option>
-                                <option value="1201">1201</option>
-                                <option value="1301">1301</option>
-                                <option value="1401">1401</option>
-                                <option value="1501">1501</option>
-                                <option value="1601">1601</option>
-                                <option value="1701">1701</option>
-                                <option value="1801">1801</option>
+                            <select name="testRangeFrom" id="testRangeFrom" class="w-full px-4 py-2 text-sm" v-model.number="rangeFromInput" @change="checkRangeFromInput">
+                                <option value=1 :selected="testRangeFrom==1">1</option>
+                                <option value=101 :selected="testRangeFrom==101">101</option>
+                                <option value=201>201</option>
+                                <option value=301>301</option>
+                                <option value=401>401</option>
+                                <option value=501>501</option>
+                                <option value=601>601</option>
+                                <option value=701>701</option>
+                                <option value=801>801</option>
+                                <option value=901>901</option>
+                                <option value=1001>1001</option>
+                                <option value=1101>1101</option>
+                                <option value=1201>1201</option>
+                                <option value=1301>1301</option>
+                                <option value=1401>1401</option>
+                                <option value=1501>1501</option>
+                                <option value=1601>1601</option>
+                                <option value=1701>1701</option>
+                                <option value=1801>1801</option>
                             </select>
                             <!-- /# -->
                         </div>
                         <div class="px-2 pt-4 pb-6 bg-grassyellow rounded-br-md rounded-tr-md">
                             <h4 class="text-sm text-left">To:</h4>
-                            <select name="testRangeTo" id="testRangeTo" class="w-full px-4 py-2 text-sm" :value="testRangeTo">
-                                <option value="100">100</option>
-                                <option value="200">200</option>
-                                <option value="300">300</option>
-                                <option value="400">400</option>
-                                <option value="500">500</option>
-                                <option value="600">600</option>
-                                <option value="700">700</option>
-                                <option value="800">800</option>
-                                <option value="900">900</option>
-                                <option value="1000">1000</option>
-                                <option value="1100">1100</option>
-                                <option value="1200">1200</option>
-                                <option value="1300">1300</option>
-                                <option value="1400">1400</option>
-                                <option value="1500">1500</option>
-                                <option value="1600">1600</option>
-                                <option value="1700">1700</option>
-                                <option value="1800">1800</option>
-                                <option value="1900">1900</option>
+                            <select name="testRangeTo" id="testRangeTo" class="w-full px-4 py-2 text-sm" v-model.number="testRangeTo">
+                                <option value=100>100</option>
+                                <option value=200>200</option>
+                                <option value=300>300</option>
+                                <option value=400>400</option>
+                                <option value=500>500</option>
+                                <option value=600>600</option>
+                                <option value=700>700</option>
+                                <option value=800>800</option>
+                                <option value=900>900</option>
+                                <option value=1000>1000</option>
+                                <option value=1100>1100</option>
+                                <option value=1200>1200</option>
+                                <option value=1300>1300</option>
+                                <option value=1400>1400</option>
+                                <option value=1500>1500</option>
+                                <option value=1600>1600</option>
+                                <option value=1700>1700</option>
+                                <option value=1800>1800</option>
+                                <option value=1900>1900</option>
                             </select>
                         </div>
                     </div>
@@ -124,7 +167,7 @@ const testQuestions = ref(25)
                 <div id="Questions">
                     <h3 class="text-sm text-white text-outline drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">Questions:
                     </h3>
-                    <div class="grid grid-cols-3 text-lg drop-shadow">
+                    <div class="grid grid-cols-3 text-lg drop-shadow-md">
                         <button
                             class="px-4 py-8 border-r rounded-bl-md rounded-tl-md border-greenyslate"
                             :class="{
@@ -183,179 +226,14 @@ const testQuestions = ref(25)
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">1</td>
-                                                <td class="px-6 py-2 whitespace-nowrap">student</td>
+                                            <tr
+                                                v-for="test in tests"
+                                                :key="test.index_no"
+                                                class="border-b dark:border-neutral-500">
+                                                <td class="px-6 py-1 font-medium whitespace-nowrap">{{ test.index_no }}</td>
+                                                <td class="px-6 py-2 whitespace-nowrap">{{ test.word.english }}</td>
                                                 <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 font-bold text-center border rounded text-xs/12">名</span>生徒
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">2</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">now</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">副</span>今
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">3</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">give</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">動</span>与える
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">4</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">not</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">副</span>〜でない
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">5</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">who</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">疑</span>だれ
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">6</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">how</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">疑</span>どうやって
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">7</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">other</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">形</span>ほかの
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">8</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">as</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">副</span>〜のように
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">9</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">some</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">形</span>いくつかの
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">10</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">one</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">名</span>一つ
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">11</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">time</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">名</span>時間、時刻
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">12</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">there</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">副</span>そこに、そこで
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">13</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">was</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">動</span>〜だった、〜があった
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">14</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">Japan</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">名</span>日本
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">15</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">English</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">名</span>英語、英国人
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">16</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">your</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">代</span>あなたの
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">17</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">the</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">冠</span>その
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">18</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">by</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">前</span>〜で、〜によって
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">19</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">is</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">動</span>〜である、〜がいる
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">20</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">him</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">代</span>彼に、彼を
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">21</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">about</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">前</span>〜について
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">22</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">then</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">副</span>〜そのとき
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">23</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">look</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">動</span>見る
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">24</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">at</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">前</span>〜で
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">25</td>
-                                                <td class="px-6 py-1 whitespace-nowrap">take</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 text-xs font-bold text-center border rounded">動</span>〜を取る
+                                                        class="inline-block w-6 p-1 mr-2 font-bold text-center border rounded text-xs/12">{{ test.word.part_of_speech.charAt(0) }}</span>{{ test.japanese }}
                                                 </td>
                                             </tr>
                                         </tbody>
