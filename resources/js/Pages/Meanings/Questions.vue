@@ -1,0 +1,89 @@
+<script setup>
+const props = defineProps({
+    'testQuestions': Number,
+    'testRangeFrom': Number,
+    'testRangeTo': Number,
+    'splitTests': Array,
+})
+</script>
+
+<template>
+    <div id="wordSheet1">
+        <div id="wordsheetforprint1q" class="hidden p-8 bg-white rounded w-a4w h-a4h print:block">
+            <div class="">
+                <div class="flex flex-row text-sm">
+                    <h2 class="w-5/6 py-4 text-lg font-bold text-center">{{ testQuestions }}問テスト ({{ testRangeFrom }}〜{{
+                        testRangeTo }}) 1 / {{ testQuestions / 25 }}</h2>
+                </div>
+                <div class="flex flex-col">
+                    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="inline-block min-w-full py-1 sm:px-6 lg:px-8">
+                            <div class="overflow-hidden">
+                                <table class="min-w-full text-xs font-light text-left">
+                                    <thead
+                                        class="font-black border-t-2 border-gray-300 border-y text-slate-800 dark:border-neutral-500">
+                                        <tr>
+                                            <th scope="col" class="w-1/12 px-6 py-4 pb-2">No.</th>
+                                            <th scope="col" class="w-3/12 px-6 py-4 pb-2">単語</th>
+                                            <th scope="col" class="w-8/12 px-6 py-4 pb-2">意味</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="test in splitTests[0]" :key="test.index_no"
+                                            class="border-b dark:border-neutral-500">
+                                            <td class="px-6 py-1 font-medium whitespace-nowrap">{{ test.index_no }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap">{{ convertEnglish(test.word.english) }}
+                                            </td>
+                                            <td class="px-6 py-1 whitespace-nowrap"><span
+                                                    class="inline-block w-6 p-1 mr-2 font-bold text-center border rounded text-xs/12">{{
+                                                        test.word.part_of_speech.charAt(0) }}</span>{{ testTypeIsRead ? '' :
+        test.japanese }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="wordsheetforprint1a" class="hidden p-8 bg-white rounded w-a4w h-a4h print:block">
+            <div class="">
+                <div class="flex flex-row text-sm">
+                    <h2 class="w-5/6 py-4 text-lg font-bold text-center">{{ testQuestions }}問テスト ({{ testRangeFrom }}〜{{
+                        testRangeTo }}) 1 / {{ testQuestions / 25 }} 正解</h2>
+                </div>
+                <div class="flex flex-col">
+                    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="inline-block min-w-full py-1 sm:px-6 lg:px-8">
+                            <div class="overflow-hidden">
+                                <table class="min-w-full text-xs font-light text-left">
+                                    <thead
+                                        class="font-black border-t-2 border-gray-300 border-y text-slate-800 dark:border-neutral-500">
+                                        <tr>
+                                            <th scope="col" class="w-1/12 px-6 py-4 pb-2">No.</th>
+                                            <th scope="col" class="w-3/12 px-6 py-4 pb-2">単語</th>
+                                            <th scope="col" class="w-8/12 px-6 py-4 pb-2">意味</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="test in splitTests[0]" :key="test.index_no"
+                                            class="border-b dark:border-neutral-500">
+                                            <td class="px-6 py-1 font-medium whitespace-nowrap">{{ test.index_no }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap">{{ test.word.english }}</td>
+                                            <td class="px-6 py-1 whitespace-nowrap"><span
+                                                    class="inline-block w-6 p-1 mr-2 font-bold text-center border rounded text-xs/12">{{
+                                                        test.word.part_of_speech.charAt(0) }}</span>{{ test.japanese }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
