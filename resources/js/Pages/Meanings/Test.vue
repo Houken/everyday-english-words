@@ -167,25 +167,7 @@ const convertEnglish = (word) => {
                             <h4 class="text-sm text-left">From:</h4>
                             <select name="testRangeFrom" id="testRangeFrom" class="w-full px-4 py-2 text-sm"
                                 v-model.number="rangeFromInput" @change="checkRangeFromInput">
-                                <option value=1 :selected="testRangeFrom == 1">1</option>
-                                <option value=101 :selected="testRangeFrom == 101">101</option>
-                                <option value=201>201</option>
-                                <option value=301>301</option>
-                                <option value=401>401</option>
-                                <option value=501>501</option>
-                                <option value=601>601</option>
-                                <option value=701>701</option>
-                                <option value=801>801</option>
-                                <option value=901>901</option>
-                                <option value=1001>1001</option>
-                                <option value=1101>1101</option>
-                                <option value=1201>1201</option>
-                                <option value=1301>1301</option>
-                                <option value=1401>1401</option>
-                                <option value=1501>1501</option>
-                                <option value=1601>1601</option>
-                                <option value=1701>1701</option>
-                                <option value=1801>1801</option>
+                                <option v-for="indexFrom in indexesFrom" :value="indexFrom">{{ indexFrom }}</option>
                             </select>
                             <!-- /# -->
                         </div>
@@ -193,25 +175,7 @@ const convertEnglish = (word) => {
                             <h4 class="text-sm text-left">To:</h4>
                             <select name="testRangeTo" id="testRangeTo" class="w-full px-4 py-2 text-sm"
                                 v-model.number="rangeToInput" @change="checkRangeToInput">
-                                <option value=100>100</option>
-                                <option value=200>200</option>
-                                <option value=300>300</option>
-                                <option value=400>400</option>
-                                <option value=500>500</option>
-                                <option value=600>600</option>
-                                <option value=700>700</option>
-                                <option value=800>800</option>
-                                <option value=900>900</option>
-                                <option value=1000>1000</option>
-                                <option value=1100>1100</option>
-                                <option value=1200>1200</option>
-                                <option value=1300>1300</option>
-                                <option value=1400>1400</option>
-                                <option value=1500>1500</option>
-                                <option value=1600>1600</option>
-                                <option value=1700>1700</option>
-                                <option value=1800>1800</option>
-                                <option value=1900>1900</option>
+                                <option v-for="indexTo in indexesTo" :value="indexTo">{{ indexTo }}</option>
                             </select>
                         </div>
                     </div>
@@ -293,7 +257,7 @@ const convertEnglish = (word) => {
             </div>
 
         </div>
-        <div>
+        <div id="wordSheet1">
             <div id="wordsheetforprint1q" class="hidden p-8 bg-white rounded w-a4w h-a4h print:block">
                 <div class="">
                     <div class="flex flex-row text-sm">
@@ -369,7 +333,7 @@ const convertEnglish = (word) => {
                 </div>
             </div>
         </div>
-        <div v-if="testQuestions > 25">
+        <div id="woodSheet2" v-if="testQuestions > 25">
             <div id="wordsheetforprint2" class="hidden p-8 bg-white rounded w-a4w h-a4h print:block">
                 <div class="">
                     <div class="flex flex-row text-sm">
@@ -408,7 +372,7 @@ const convertEnglish = (word) => {
                 </div>
             </div>
         </div>
-        <div v-if="testQuestions > 50">
+        <div id="woodSheet3" v-if="testQuestions > 50">
             <div id="wordsheetforprint3" class="hidden p-8 bg-white rounded w-a4w h-a4h print:block">
                 <div class="">
                     <div class="flex flex-row text-sm">
@@ -447,7 +411,7 @@ const convertEnglish = (word) => {
                 </div>
             </div>
         </div>
-        <div v-if="testQuestions > 50">
+        <div id="woodSheet4" v-if="testQuestions > 50">
             <div id="wordsheetforprint4" class="hidden p-8 bg-white rounded w-a4w h-a4h print:block">
                 <div class="">
                     <div class="flex flex-row text-sm">
