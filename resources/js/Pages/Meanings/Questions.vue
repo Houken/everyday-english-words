@@ -1,4 +1,8 @@
 <script setup>
+import dayjs from "dayjs";
+import ja from 'dayjs/locale/ja';
+dayjs.locale(ja);
+
 const props = defineProps({
     'section': Number,
     'testTypeIsRead': Boolean,
@@ -30,8 +34,8 @@ const convertEnglish = (word) => {
         <div id="wordsheetforprint1q" class="hidden p-8 bg-white rounded w-a4w h-a4h print:block">
             <div class="">
                 <div class="flex flex-row text-sm">
-                    <div>{{ setToday }}</div>
-                    <h2 class="w-5/6 py-4 text-lg font-bold text-center">{{ testQuestions }}問テスト ({{ testRangeFrom }}〜{{
+                    <div>{{ dayjs().format('YYYY/M/D(ddd) HH:mm') }}</div>
+                    <h2 class="w-2/3 py-4 text-lg font-bold text-center">{{ testQuestions }}問テスト ({{ testRangeFrom }}〜{{
                         testRangeTo }}) {{ section }} / {{ testQuestions / 25 }}</h2>
                 </div>
                 <div class="flex flex-col">
