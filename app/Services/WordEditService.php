@@ -31,4 +31,24 @@ class WordEditService
 
         return $masters;
     }
+
+    public function generateTo($maxValue) {
+        $array = [];
+        for($i = 100; $i <= $maxValue; $i += 100) {
+            $array[] = $i;
+        }
+        if(end($array) != $maxValue) {
+            $array[] = $maxValue;
+        }
+        return $array;
+    }
+
+    public function generateFrom($maxValue) {
+
+        $array = [];
+        for($i = 1; $i <= $maxValue; $i += 100) {
+            $array[] = $i;
+        }
+        return $array;
+    }
 }

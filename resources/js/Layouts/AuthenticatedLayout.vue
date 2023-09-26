@@ -38,6 +38,9 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('meaning.edit')" :active="route().current('meaning.index')">
                                     単語帳編集
                                 </NavLink>
+                                <NavLink :href="route('word.test')" :active="route().current('word.test')">
+                                    単語テスト
+                                </NavLink>
                             </div>
                         </div>
 
@@ -126,6 +129,9 @@ const showingNavigationDropdown = ref(false);
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('meaning.edit')" :active="route().current('meaning.edit')">
                             単語帳編集
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('word.test')" :active="route().current('word.test')">
+                            単語テスト
                         </ResponsiveNavLink>
                     </div>
 

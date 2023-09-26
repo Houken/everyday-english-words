@@ -12,6 +12,10 @@ export default {
 
     theme: {
         extend: {
+            spacing: {
+                a4w: '210mm',
+                a4h: '298mm',
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },

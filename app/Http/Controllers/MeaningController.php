@@ -90,24 +90,31 @@ class MeaningController extends Controller
         ]);
     }
 
-    public function test(Request $request)
+    public function test(Request $request, WordEditService $wordEditService)
     {
-        $attributes = $request->only(['testBookId', 'testTypeIsRead', 'testHintLevel']);
+        $attributes = $request->only(['testBookId', 'testTypeIsRead', 'testHintLevel', 'testRangeFrom', 'testRangeTo', 'testQuestions']);
         $bookId = array_key_exists('testBookId', $attributes) ? (int)$attributes['testBookId'] : 3;
         $typeIsRead = array_key_exists('testTypeIsRead', $attributes) ? (boolean)$attributes['testTypeIsRead'] : true;
-        $hintLevel = array_key_exists('testHintLevel', $attributes) ? (int)$attributes['testHintLevel'] : 3;
+        $hintLevel = array_key_exists('testHintLevel', $attributes) ? (int)$attributes['testHintLevel'] : 2;
         $rangeFrom = array_key_exists('testRangeFrom', $attributes) ? (int)$attributes['testRangeFrom'] : 1;
         $rangeTo = array_key_exists('testRangeTo', $attributes) ? (int)$attributes['testRangeTo'] : 100;
+        $questions = array_key_exists('testQuestions', $attributes) ? (int)$attributes['testQuestions'] : 25;
 
         $tests = Meaning::where('book_id', $bookId)
                     ->whereBetween('index_no', [$rangeFrom,$rangeTo])
                     ->inRandomOrder()
-                    ->take(25)
+                    ->take($questions)
                     ->with('word')
                     ->get();
+        $splitTests = array_chunk($tests->toArray(), 25);
 
         $maxIndex = Meaning::where('book_id', $bookId)->count();
-        // dd($rangeFrom, $rangeTo, $maxIndex);
+
+        $indexesTo = $wordEditService->generateTo($maxIndex);
+        $indexesFrom = $wordEditService->generateFrom($maxIndex);
+
+
+
 
         return Inertia::render('Meanings/Test', [
             'bookId' => $bookId,
@@ -116,7 +123,11 @@ class MeaningController extends Controller
             'rangeFrom' => $rangeFrom,
             'rangeTo' => $rangeTo,
             'maxIndex'=> $maxIndex,
+            'indexesTo' => $indexesTo,
+            'indexesFrom' => $indexesFrom,
+            'questions' => $questions,
             'tests' => $tests,
+            'splitTests' => $splitTests,
         ]);
     }
 }

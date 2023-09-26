@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateWordRequest;
 use Illuminate\Http\Request;
 use App\Models\Word;
 use App\Models\Book;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 use function Laravel\Prompts\select;
 
@@ -101,4 +102,12 @@ class WordController extends Controller
     {
         //
     }
+
+    protected function english(): Attribute
+        {
+            return Attribute::make(
+                get: fn (string $value) => ucfirst($value),
+            );
+            // first_nameの一文字目を大文字にして返す
+        }
 }
