@@ -1,19 +1,38 @@
 <script setup>
 const props = defineProps({
+    'section': Number,
+    'testTypeIsRead': Boolean,
+    'testHintLevel': Number,
     'testQuestions': Number,
     'testRangeFrom': Number,
     'testRangeTo': Number,
-    'splitTests': Array,
+    'splitTest': Array,
 })
+
+const convertEnglish = (word) => {
+    console.log(props.testTypeIsRead, props.testHintLevel)
+    if (!props.testTypeIsRead && props.testHintLevel === 2) {
+        const firstChar = word.charAt(0);
+        const remaining = word.slice(1);
+
+        return firstChar + remaining.replace(/[a-zA-z]/g, ' _');
+
+    } else if (!props.testTypeIsRead && props.testHintLevel === 1) {
+        return word.replace(/[a-zA-z]/g, ' _');
+    } else {
+        return word
+    }
+}
 </script>
 
 <template>
-    <div id="wordSheet1">
+    <div id="wordSheet{{ section }}" class="border-b">
         <div id="wordsheetforprint1q" class="hidden p-8 bg-white rounded w-a4w h-a4h print:block">
             <div class="">
                 <div class="flex flex-row text-sm">
+                    <div>{{ setToday }}</div>
                     <h2 class="w-5/6 py-4 text-lg font-bold text-center">{{ testQuestions }}問テスト ({{ testRangeFrom }}〜{{
-                        testRangeTo }}) 1 / {{ testQuestions / 25 }}</h2>
+                        testRangeTo }}) {{ section }} / {{ testQuestions / 25 }}</h2>
                 </div>
                 <div class="flex flex-col">
                     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -29,15 +48,14 @@ const props = defineProps({
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="test in splitTests[0]" :key="test.index_no"
+                                        <tr v-for="test in splitTest" :key="test.index_no"
                                             class="border-b dark:border-neutral-500">
                                             <td class="px-6 py-1 font-medium whitespace-nowrap">{{ test.index_no }}</td>
                                             <td class="px-6 py-2 whitespace-nowrap">{{ convertEnglish(test.word.english) }}
                                             </td>
                                             <td class="px-6 py-1 whitespace-nowrap"><span
                                                     class="inline-block w-6 p-1 mr-2 font-bold text-center border rounded text-xs/12">{{
-                                                        test.word.part_of_speech.charAt(0) }}</span>{{ testTypeIsRead ? '' :
-        test.japanese }}
+                                                        test.word.part_of_speech.charAt(0) }}</span>{{ testTypeIsRead ? '' : test.japanese }}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -52,7 +70,7 @@ const props = defineProps({
             <div class="">
                 <div class="flex flex-row text-sm">
                     <h2 class="w-5/6 py-4 text-lg font-bold text-center">{{ testQuestions }}問テスト ({{ testRangeFrom }}〜{{
-                        testRangeTo }}) 1 / {{ testQuestions / 25 }} 正解</h2>
+                        testRangeTo }}) {{ section }} / {{ testQuestions / 25 }} 正解</h2>
                 </div>
                 <div class="flex flex-col">
                     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -68,7 +86,7 @@ const props = defineProps({
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="test in splitTests[0]" :key="test.index_no"
+                                        <tr v-for="test in splitTest" :key="test.index_no"
                                             class="border-b dark:border-neutral-500">
                                             <td class="px-6 py-1 font-medium whitespace-nowrap">{{ test.index_no }}</td>
                                             <td class="px-6 py-2 whitespace-nowrap">{{ test.word.english }}</td>
