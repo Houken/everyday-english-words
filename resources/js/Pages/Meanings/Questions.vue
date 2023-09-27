@@ -3,6 +3,8 @@ import dayjs from "dayjs";
 import ja from 'dayjs/locale/ja';
 dayjs.locale(ja);
 
+import convertEnglish from './helpers'
+
 const props = defineProps({
     'section': Number,
     'testTypeIsRead': Boolean,
@@ -13,21 +15,6 @@ const props = defineProps({
     'testRangeTo': Number,
     'splitTest': Array,
 })
-
-const convertEnglish = (word) => {
-    // console.log(props.testTypeIsRead, props.testHintLevel)
-    if (!props.testTypeIsRead && props.testHintLevel === 2) {
-        const firstChar = word.charAt(0);
-        const remaining = word.slice(1);
-
-        return firstChar + remaining.replace(/[a-zA-z]/g, ' _');
-
-    } else if (!props.testTypeIsRead && props.testHintLevel === 1) {
-        return word.replace(/[a-zA-z]/g, ' _');
-    } else {
-        return word
-    }
-}
 </script>
 
 <template>
@@ -61,7 +48,7 @@ const convertEnglish = (word) => {
                                             class="border-b dark:border-neutral-500">
                                             <td class="text-sm text-gray-300">□□□</td>
                                             <td class="px-6 py-1 text-right font-condensed whitespace-nowrap">{{ test.index_no }}</td>
-                                            <td class="px-6 py-2 text-sm whitespace-nowrap">{{ convertEnglish(test.word.english) }}
+                                            <td class="px-6 py-2 text-sm whitespace-nowrap">{{ convertEnglish(test.word.english, testTypeIsRead, testHintLevel) }}
                                             </td>
                                             <td class="px-6 py-1 whitespace-nowrap"><span
                                                     class="inline-block w-6 p-1 mr-2 font-bold text-center border rounded text-xs/12">{{
