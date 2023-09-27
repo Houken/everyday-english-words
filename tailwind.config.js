@@ -18,6 +18,7 @@ export default {
             },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                condensed: ['Roboto Condensed', ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 'greenyslate': '#98A9B0',

@@ -18,7 +18,7 @@ const props = defineProps({
     'indexesFrom': Array,
 })
 
-console.log(props.indexesFrom, props.indexesTo)
+// console.log(props.indexesFrom, props.indexesTo)
 
 const testBookId = ref(props.bookId)
 const testTypeIsRead = ref(props.typeIsRead)
@@ -31,6 +31,11 @@ const rangeToInput = ref(props.rangeTo)
 
 const testQuestionsString = ref('')
 const testTypeIsReadString = ref('')
+
+const bookNames = ['ターゲット1900', 'ターゲット1800', '中学ターゲット', 'システム英単語']
+const testBookName = bookNames[ testBookId.value - 1]
+
+console.log(testBookId, bookNames, testBookName)
 
 watch(testQuestionsString, (q) => {
     testQuestions.value = Number(q)
@@ -76,19 +81,8 @@ watch([
     }))
 })
 
-const convertEnglish = (word) => {
-    // console.log(testTypeIsRead.value, testHintLevel.value)
-    if (!testTypeIsRead.value && testHintLevel.value === 2) {
-        const firstChar = word.charAt(0);
-        const remaining = word.slice(1);
-
-        return firstChar + remaining.replace(/[a-zA-z]/g, ' _');
-
-    } else if (!testTypeIsRead.value && testHintLevel.value === 1) {
-        return word.replace(/[a-zA-z]/g, ' _');
-    } else {
-        return word
-    }
+const printDirect = () => {
+    window.print();
 }
 </script>
 
@@ -100,9 +94,9 @@ const convertEnglish = (word) => {
         </template>
         <div class="flex p-4 bg-greenyslate print:hidden">
             <div id="sidebar"
-                class="fixed flex flex-col mr-4 font-bold t-0 min-w-fit max-w-fit gap-y-4 basis-1/4 text-slate-600">
+                class="fixed flex flex-col mr-4 font-bold t-0 min-w-fit max-w-fit gap-y-[.75rem] basis-1/4 text-slate-600">
                 <div id="sitetitle"
-                    class="p-6 text-2xl font-black text-center rounded-lg text-tealblack outline outline-2 outline-white outline-offset-4 bg-tealgray">
+                    class="p-6 text-2xl font-black text-center rounded-lg text-tealblack outline outline-2 outline-white -outline-offset-8 bg-tealgray">
                     まいにち単語テスト</div>
                 <div id="books" class="">
                     <h3 class="text-sm text-white text-outline drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">Book:</h3>
@@ -210,10 +204,10 @@ const convertEnglish = (word) => {
                     </div>
                 </div>
             </div>
-            <div id="wordsheet" class="p-4 bg-white rounded ml-80 basis-3/4">
+            <div id="wordsheet" class="p-4 bg-white rounded ml-[18rem] basis-3/4">
                 <div class="px-2 bg-yellow-50 drop-shadow-lg">
                     <div class="flex flex-row text-sm">
-                        <button
+                        <button @click="printDirect"
                             class="flex flex-row px-2 py-2 m-auto text-blue-500 align-middle bg-blue-100 border rounded hover:text-blue-900 hover:bg-sky-50 w-1/8 min-w-fit">
                             <strong>Print it!</strong>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -259,7 +253,8 @@ const convertEnglish = (word) => {
 
         </div>
         <div id="testSheets">
-            <questions v-for="n in (testQuestions / 25)" :key="n" :section=n :testTypeIsRead="testTypeIsRead"
+            <questions v-for="n in (testQuestions / 25)" :key="n" :section=n
+                :testTypeIsRead="testTypeIsRead" :testBookName="testBookName"
                 :testHintLevel="testHintLevel" :testQuestions="testQuestions" :testRangeFrom="testRangeFrom"
                 :testRangeTo="testRangeTo" :splitTest="splitTests[n - 1]">
             </questions>
