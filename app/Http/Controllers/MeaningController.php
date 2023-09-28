@@ -113,7 +113,7 @@ class MeaningController extends Controller
         $indexesTo = $wordEditService->generateTo($maxIndex);
         $indexesFrom = $wordEditService->generateFrom($maxIndex);
 
-        return Inertia::render('Meanings/Test', [
+        $testStyle = [
             'bookId' => $bookId,
             'typeIsRead' => $typeIsRead,
             'hintLevel' => $hintLevel,
@@ -123,6 +123,10 @@ class MeaningController extends Controller
             'indexesTo' => $indexesTo,
             'indexesFrom' => $indexesFrom,
             'questions' => $questions,
+        ];
+
+        return Inertia::render('Meanings/Test', [
+            'testStyle' => $testStyle,
             'tests' => $tests,
             'splitTests' => $splitTests,
         ]);

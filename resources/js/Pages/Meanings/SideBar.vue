@@ -1,90 +1,24 @@
 <script setup>
-import AuthenticatedTestLayout from '@/Layouts/AuthenticatedTestLayout.vue';
-import { Head, router, useForm } from '@inertiajs/vue3';
-import { computed, ref, watch } from 'vue';
-import Questions from './Questions.vue'
+import dayjs from "dayjs";
+import ja from 'dayjs/locale/ja';
+dayjs.locale(ja);
 
-import convertEnglish from './helpers';
+import convertEnglish from './helpers'
 
 const props = defineProps({
-    'testStyle': { type: Object, required: true },
-    'tests': Object,
-    'splitTests': Array,
+    'section': Number,
+    'testTypeIsRead': Boolean,
+    'testBookName': String,
+    'testHintLevel': Number,
+    'testQuestions': Number,
+    'testRangeFrom': Number,
+    'testRangeTo': Number,
+    'splitTest': Array,
 })
-
-// console.log(props.indexesFrom, props.indexesTo)
-
-const testBookId = ref(props.testStyle.bookId)
-const testTypeIsRead = ref(props.testStyle.typeIsRead)
-const testHintLevel = ref(props.testStyle.hintLevel)
-const testRangeFrom = ref(props.testStyle.rangeFrom)
-const testRangeTo = ref(props.testStyle.rangeTo)
-const testQuestions = ref(props.testStyle.questions)
-const rangeFromInput = ref(props.testStyle.rangeFrom)
-const rangeToInput = ref(props.testStyle.rangeTo)
-
-const testQuestionsString = ref('')
-const testTypeIsReadString = ref('')
-
-const bookNames = ['ターゲット1900', 'ターゲット1800', '中学ターゲット', 'システム英単語']
-const testBookName = bookNames[ testBookId.value - 1]
-
-watch(testQuestionsString, (q) => {
-    testQuestions.value = Number(q)
-})
-
-watch(testTypeIsReadString, (q) => {
-    testTypeIsRead.value = q === 'true'
-})
-
-const checkRangeFromInput = () => {
-    let from = rangeFromInput.value
-    let to = rangeToInput.value
-    rangeToInput.value = from > to ? Math.min(from + 99, props.testStyle.maxIndex) : to
-    testRangeFrom.value = from
-    testRangeTo.value = rangeToInput.value
-}
-
-const checkRangeToInput = () => {
-    let from = rangeFromInput.value
-    let to = rangeToInput.value
-    rangeFromInput.value = from > to ? Math.max(to - 99, 1) : from
-    testRangeTo.value = to
-    testRangeFrom.value = rangeFromInput.value
-}
-
-watch([
-    testBookId,
-    testTypeIsRead,
-    testHintLevel,
-    testRangeFrom,
-    testRangeTo,
-    testQuestions
-], (cr, prev) => {
-
-    router.get(route('word.test', {
-        testBookId: cr[0],
-        testTypeIsRead: cr[1],
-        testHintLevel: cr[2],
-        testRangeFrom: cr[3],
-        testRangeTo: cr[4],
-        testQuestions: cr[5],
-    }))
-})
-
-const printDirect = () => {
-    window.print();
-}
 </script>
 
 <template>
-    <Head title="単語テスト" />
-    <AuthenticatedTestLayout>
-        <template #header class="print:hidden">
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">単語テスト</h2>
-        </template>
-        <div class="flex p-4 bg-greenyslate print:hidden">
-            <div id="sidebar"
+    <div id="sidebar"
                 class="fixed flex flex-col mr-4 font-bold t-0 min-w-fit max-w-fit gap-y-[.75rem] basis-1/4 text-slate-600">
                 <div id="sitetitle"
                     class="p-6 text-2xl font-black text-center rounded-lg text-tealblack outline outline-2 outline-white -outline-offset-8 bg-tealgray">
@@ -195,60 +129,4 @@ const printDirect = () => {
                     </div>
                 </div>
             </div>
-            <div id="wordsheet" class="p-4 bg-white rounded ml-[18rem] basis-3/4">
-                <div class="px-2 bg-yellow-50 drop-shadow-lg">
-                    <div class="flex flex-row text-sm">
-                        <button @click="printDirect"
-                            class="flex flex-row px-2 py-2 m-auto text-blue-500 align-middle bg-blue-100 border rounded hover:text-blue-900 hover:bg-sky-50 w-1/8 min-w-fit">
-                            <strong>Print it!</strong>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z" />
-                            </svg>
-                        </button>
-                        <h2 class="w-5/6 py-4 text-lg font-bold text-center">{{ testQuestions }}問テスト ({{ testRangeFrom }}〜{{
-                            testRangeTo }})</h2>
-                    </div>
-                    <div class="flex flex-col">
-                        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                            <div class="inline-block min-w-full py-1 sm:px-6 lg:px-8">
-                                <div class="overflow-hidden">
-                                    <table class="min-w-full text-xs font-light text-left">
-                                        <thead
-                                            class="font-black border-t-2 border-gray-300 border-y text-slate-800 dark:border-neutral-500">
-                                            <tr>
-                                                <th scope="col" class="w-1/12 px-6 py-4 pb-2">No.</th>
-                                                <th scope="col" class="w-3/12 px-6 py-4 pb-2">単語</th>
-                                                <th scope="col" class="w-8/12 px-6 py-4 pb-2">意味</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="test in tests" :key="test.index_no"
-                                                class="border-b dark:border-neutral-500">
-                                                <td class="px-6 py-1 font-medium whitespace-nowrap">{{ test.index_no }}</td>
-                                                <td class="px-6 py-2 whitespace-nowrap">{{ convertEnglish(test.word.english, testTypeIsRead, testHintLevel) }}</td>
-                                                <td class="px-6 py-1 whitespace-nowrap"><span
-                                                        class="inline-block w-6 p-1 mr-2 font-bold text-center border rounded text-xs/12">{{
-                                                            test.word.part_of_speech.charAt(0) }}</span><span v-if="!testTypeIsRead">{{ test.japanese }}</span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div id="testSheets">
-            <questions v-for="n in (testQuestions / 25)" :key="n" :section=n
-                :testTypeIsRead="testTypeIsRead" :testBookName="testBookName"
-                :testHintLevel="testHintLevel" :testQuestions="testQuestions" :testRangeFrom="testRangeFrom"
-                :testRangeTo="testRangeTo" :splitTest="splitTests[n - 1]">
-            </questions>
-        </div>
-    </AuthenticatedTestLayout>
 </template>
