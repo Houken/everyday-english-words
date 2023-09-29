@@ -139,8 +139,8 @@ const printDirect = () => {
                             Write</label>
                     </div>
                     <div id="hintslider" class="z-0 p-2 text-center bg-fuchsia-50 rounded-b-md" :class="{
-                        'ease-in  -translate-y-16 duration-800 delay-500': testTypeIsRead,
-                        'ease-in  -translate-y-1 duration-800 delay-500': !testTypeIsRead,
+                        'ease-in-out  -translate-y-16 duration-800 delay-800 transition h-0': testTypeIsRead,
+                        'ease-in-out  -translate-y-1 duration-800 delay-800 transition h-auto': !testTypeIsRead,
                     }">
                         <h3>Hint Level</h3>
                         <input name="hint" type="range" min="0" max="2" step="1" v-model.number="testHintLevel">
