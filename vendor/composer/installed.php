@@ -929,6 +929,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'revolution/laravel-vercel-installer' => array(
+            'pretty_version' => '1.1.0',
+            'version' => '1.1.0.0',
+            'reference' => '894b9e5975347929c73a5377097f3a80074cb358',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../revolution/laravel-vercel-installer',
+            'aliases' => array(),
+            'dev_requirement' => true,
+        ),
         'rhumsaa/uuid' => array(
             'dev_requirement' => false,
             'replaced' => array(
