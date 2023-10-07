@@ -1,15 +1,33 @@
 <?php return array(
     'root' => array(
         'name' => 'laravel/laravel',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '06b01eee1aca63492a9c442c115479e12f98d3bc',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
+        'aws/aws-crt-php' => array(
+            'pretty_version' => 'v1.2.2',
+            'version' => '1.2.2.0',
+            'reference' => '2f1dc7b7eda080498be96a4a6d683a41583030e9',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../aws/aws-crt-php',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'aws/aws-sdk-php' => array(
+            'pretty_version' => '3.282.0',
+            'version' => '3.282.0.0',
+            'reference' => '79a3ed5bb573f592823f8b1cffe0dbac3132e6b4',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../aws/aws-sdk-php',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'brianium/paratest' => array(
             'pretty_version' => 'v7.2.6',
             'version' => '7.2.6.0',
@@ -183,6 +201,15 @@
             'install_path' => __DIR__ . '/../hamcrest/hamcrest-php',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'hollodotme/fast-cgi-client' => array(
+            'pretty_version' => 'v3.1.7',
+            'version' => '3.1.7.0',
+            'reference' => '062182d4eda73c161cc2839783acc83096ec0f37',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../hollodotme/fast-cgi-client',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'illuminate/auth' => array(
             'dev_requirement' => false,
@@ -425,9 +452,9 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '06b01eee1aca63492a9c442c115479e12f98d3bc',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -487,6 +514,24 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'laravel/vapor-cli' => array(
+            'pretty_version' => 'v1.60.0',
+            'version' => '1.60.0.0',
+            'reference' => '012b8beae5f258aba75422896110cdfbb160bc25',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../laravel/vapor-cli',
+            'aliases' => array(),
+            'dev_requirement' => true,
+        ),
+        'laravel/vapor-core' => array(
+            'pretty_version' => 'v2.32.0',
+            'version' => '2.32.0.0',
+            'reference' => '36886e915b46cbd738ec8e147be09325d00cbee3',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../laravel/vapor-core',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'league/commonmark' => array(
             'pretty_version' => '2.4.1',
             'version' => '2.4.1.0',
@@ -513,6 +558,15 @@
             'install_path' => __DIR__ . '/../league/flysystem',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'league/flysystem-aws-s3-v3' => array(
+            'pretty_version' => '3.16.0',
+            'version' => '3.16.0.0',
+            'reference' => 'ded9ba346bb01cb9cc4cc7f2743c2c0e14d18e1c',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../league/flysystem-aws-s3-v3',
+            'aliases' => array(),
+            'dev_requirement' => true,
         ),
         'league/flysystem-local' => array(
             'pretty_version' => '3.15.0',
@@ -555,6 +609,15 @@
             'replaced' => array(
                 0 => '^1.0',
             ),
+        ),
+        'mtdowling/jmespath.php' => array(
+            'pretty_version' => '2.7.0',
+            'version' => '2.7.0.0',
+            'reference' => 'bbb69a935c2cbb0c03d7f481a238027430f6440b',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../mtdowling/jmespath.php',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(
             'pretty_version' => '1.11.1',
@@ -619,6 +682,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'nyholm/psr7' => array(
+            'pretty_version' => '1.8.0',
+            'version' => '1.8.0.0',
+            'reference' => '3cb4d163b58589e47b35103e8e5e6a6a475b47be',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../nyholm/psr7',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'pestphp/pest' => array(
             'pretty_version' => 'v2.16.1',
             'version' => '2.16.1.0',
@@ -672,6 +744,12 @@
             'install_path' => __DIR__ . '/../phar-io/version',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'php-http/message-factory-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '1.0',
+            ),
         ),
         'phpdocumentor/reflection-common' => array(
             'pretty_version' => '2.2.0',
@@ -943,6 +1021,15 @@
             'replaced' => array(
                 0 => '4.7.4',
             ),
+        ),
+        'riverline/multipart-parser' => array(
+            'pretty_version' => '2.1.1',
+            'version' => '2.1.1.0',
+            'reference' => '2418bdfc2eab01e39bcffee808b1a365c166292a',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../riverline/multipart-parser',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'sebastian/cli-parser' => array(
             'pretty_version' => '2.0.0',
@@ -1307,6 +1394,15 @@
             'reference' => '0b5c29118f2e980d455d2e34a5659f4579847c54',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/process',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/psr-http-message-bridge' => array(
+            'pretty_version' => 'v2.3.1',
+            'version' => '2.3.1.0',
+            'reference' => '581ca6067eb62640de5ff08ee1ba6850a0ee472e',
+            'type' => 'symfony-bridge',
+            'install_path' => __DIR__ . '/../symfony/psr-http-message-bridge',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

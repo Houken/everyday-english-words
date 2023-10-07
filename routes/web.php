@@ -18,7 +18,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/word-test', [MeaningController::class, 'test'])->name('word.test');
+Route::get('/', [MeaningController::class, 'test'])->name('word.test');
 
 Route::post('/word-edit', [WordController::class, 'store'])->name('word.store');
 
@@ -30,7 +30,7 @@ Route::get('/word-list', [MeaningController::class, 'index'])->name('meaning.ind
 
 Route::get('/words', [WordController::class, 'index'])->name('words.index');
 
-Route::get('/', function () {
+Route::get('/admin', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),

@@ -86,7 +86,7 @@ const props = defineProps({
                                         <tr v-for="test in splitTest" :key="test.index_no"
                                             class="border-b dark:border-neutral-500">
                                             <td class="px-6 py-1 font-medium whitespace-nowrap">{{ test.index_no }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap">{{ test.word.english }}</td>
+                                            <td class="px-6 py-2 text-sm whitespace-nowrap">{{ test.word.english }}</td>
                                             <td class="px-6 py-1 whitespace-nowrap"><span
                                                     class="inline-block w-6 p-1 mr-2 font-bold text-center border rounded text-xs/12">{{
                                                         test.word.part_of_speech.charAt(0) }}</span>{{ test.japanese }}
