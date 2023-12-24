@@ -26,7 +26,7 @@ const rangeToInput = ref(props.testStyle.rangeTo)
 const testQuestionsString = ref('')
 const testTypeIsReadString = ref('')
 
-const bookNames = ['ターゲット1900', 'ターゲット1800', '中学ターゲット', 'システム英単語']
+const bookNames = ['ターゲット1900', 'ターゲット1400', '中学ターゲット', 'システム英単語']
 const testBookName = bookNames[ testBookId.value - 1]
 
 watch(testQuestionsString, (q) => {
